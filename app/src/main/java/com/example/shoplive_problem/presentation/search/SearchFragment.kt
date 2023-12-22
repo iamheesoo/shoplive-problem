@@ -1,26 +1,41 @@
 package com.example.shoplive_problem.presentation.search
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.EditorInfo
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.shoplive_problem.databinding.FragmentSearchBinding
 import com.example.shoplive_problem.presentation.extensions.showToast
+import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import reactivecircus.flowbinding.android.widget.editorActionEvents
+import reactivecircus.flowbinding.android.widget.textChanges
 
 class SearchFragment : Fragment() {
+
+    companion object {
+        const val SEARCH_WORD_MIN_LENGTH = 2
+    }
+
     private val binding: FragmentSearchBinding by lazy {
         FragmentSearchBinding.inflate(layoutInflater)
     }
     private val viewModel: SearchViewModel by viewModel()
     private val adapter = CharacterAdapter(
-        onClickCharacter = {}
+        onClickCharacter = {
+            // 프로그레스바가 돌아갈 때는 아이템 클릭을 막아 다른 동작을 못하게끔 한다
+            if (viewModel.isLoading.value != true) {
+                Log.i("!!!", "$it click")
+            }
+        }
     )
 
     override fun onCreateView(
@@ -33,6 +48,10 @@ class SearchFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        viewModel.isLoading.observe(this) {
+            binding.clProgress.isVisible = it
+        }
 
         viewModel.toastMessage.observe(this) {
             binding.root.context.showToast(it)
@@ -50,15 +69,33 @@ class SearchFragment : Fragment() {
             rvList.layoutManager = GridLayoutManager(root.context, 2)
             rvList.adapter = adapter
 
-            etSearch.editorActionEvents {
-                if (it.actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    val text = etSearch.text.trim().toString()
-                    if (text.isNotEmpty()) {
-                        viewModel.getSearchResult(text)
+            rvList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                    super.onScrollStateChanged(recyclerView, newState)
+
+                    // 스크롤이 최하단에 갔는지 && 마지막 아이템이 보여졌는지
+                    val lastVisibleItemPosition =
+                        (recyclerView.layoutManager as GridLayoutManager).findLastCompletelyVisibleItemPosition()
+                    if (!recyclerView.canScrollVertically(1)
+                        && lastVisibleItemPosition == recyclerView.adapter?.itemCount?.minus(1)
+                    ) {
+                        viewModel.getSearchResult()
                     }
                 }
-                false
-            }.launchIn(viewLifecycleOwner.lifecycleScope)
+            })
+
+            etSearch
+                .textChanges()
+                .skipInitialValue()
+                .map { it.trim() }
+                .debounce(300L)
+                .onEach { text ->
+                    viewModel.searchText = text.toString()
+                    if (text.length > SEARCH_WORD_MIN_LENGTH) {
+                        viewModel.getSearchResult()
+                    }
+                }
+                .launchIn(viewLifecycleOwner.lifecycleScope)
         }
     }
 }
