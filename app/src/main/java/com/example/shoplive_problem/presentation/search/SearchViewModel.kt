@@ -9,6 +9,8 @@ import com.example.shoplive_problem.domain.model.Character
 import com.example.shoplive_problem.domain.usecase.GetCharacterListUseCase
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.onCompletion
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 
 class SearchViewModel(
@@ -27,6 +29,10 @@ class SearchViewModel(
     val toastMessage: LiveData<String>
         get() = _toastMessage
 
+    private val _isLoading = MutableLiveData<Boolean>()
+    val isLoading: LiveData<Boolean>
+        get() = _isLoading
+
     var searchText: String = ""
         set(value) {
             field = value
@@ -38,6 +44,11 @@ class SearchViewModel(
 
     fun getSearchResult() {
         if (isPagingAvailable) {
+            // 페이징 처리 시 진행 중이던 flow는 종료한다
+            // ex. scroll down으로 페이징 요청하여 진행중에 다시 scroll down하는 경우
+            if (job != null) {
+                job?.cancel()
+            }
             job = viewModelScope.launch {
                 getCharacterListUseCase(
                     GetCharacterListUseCase.Params(
@@ -46,6 +57,8 @@ class SearchViewModel(
                         offset = _characterList.value?.size ?: 0
                     )
                 )
+                    .onStart { showLoading() }
+                    .onCompletion { hideLoading() }
                     .collectLatest {
                         when (it) {
                             is ResultData.Success -> {
@@ -72,5 +85,13 @@ class SearchViewModel(
         isPagingAvailable = true
         _characterList.value = null
         job?.cancel()
+    }
+
+    private fun showLoading() {
+        _isLoading.value = true
+    }
+
+    private fun hideLoading() {
+        _isLoading.value = false
     }
 }

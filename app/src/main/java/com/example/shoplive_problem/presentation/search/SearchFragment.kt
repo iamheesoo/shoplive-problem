@@ -1,9 +1,11 @@
 package com.example.shoplive_problem.presentation.search
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
@@ -28,7 +30,12 @@ class SearchFragment : Fragment() {
     }
     private val viewModel: SearchViewModel by viewModel()
     private val adapter = CharacterAdapter(
-        onClickCharacter = {}
+        onClickCharacter = {
+            // 프로그레스바가 돌아갈 때는 아이템 클릭을 막아 다른 동작을 못하게끔 한다
+            if (viewModel.isLoading.value != true) {
+                Log.i("!!!", "$it click")
+            }
+        }
     )
 
     override fun onCreateView(
@@ -41,6 +48,10 @@ class SearchFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        viewModel.isLoading.observe(this) {
+            binding.clProgress.isVisible = it
+        }
 
         viewModel.toastMessage.observe(this) {
             binding.root.context.showToast(it)
@@ -62,7 +73,12 @@ class SearchFragment : Fragment() {
                 override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                     super.onScrollStateChanged(recyclerView, newState)
 
-                    if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    // 스크롤이 최하단에 갔는지 && 마지막 아이템이 보여졌는지
+                    val lastVisibleItemPosition =
+                        (recyclerView.layoutManager as GridLayoutManager).findLastCompletelyVisibleItemPosition()
+                    if (!recyclerView.canScrollVertically(1)
+                        && lastVisibleItemPosition == recyclerView.adapter?.itemCount?.minus(1)
+                    ) {
                         viewModel.getSearchResult()
                     }
                 }
