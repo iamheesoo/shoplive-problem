@@ -10,7 +10,7 @@ object CharacterMapper {
                 id = result.id,
                 name = result.name,
                 description = result.description,
-                thumbnailUrl = "${result.thumbnail?.path}.${result.thumbnail?.extension}"
+                thumbnailUrl = "${result.thumbnail?.path}/portrait_xlarge.${result.thumbnail?.extension}"
             )
         }
     }
