@@ -8,7 +8,6 @@ import com.example.shoplive_problem.domain.usecase.AddFavoriteListUseCase
 import com.example.shoplive_problem.domain.usecase.DeleteFavoriteListUseCase
 import com.example.shoplive_problem.domain.usecase.GetFavoriteListUseCase
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 open class BookmarkViewModel(
@@ -26,9 +25,10 @@ open class BookmarkViewModel(
 
     private fun getFavoriteList() {
         viewModelScope.launch(Dispatchers.IO) {
+            setLoadingVisible(true)
             getFavoriteListUseCase(Unit)
-                .loading()
-                .collectLatest {
+                .let {
+                    setLoadingVisible(false)
                     _favoriteList.postValue(it)
                 }
         }
@@ -36,14 +36,13 @@ open class BookmarkViewModel(
 
     fun addFavorite(data: Character) {
         viewModelScope.launch(Dispatchers.IO) {
+            setLoadingVisible(true)
             addFavoriteListUseCase(data)
-                .loading()
-                .collectLatest { isSuccess ->
-                    if (isSuccess) {
+                .let { list ->
+                    setLoadingVisible(false)
+                    if (list.isNotEmpty()) {
                         _toastMessage.postValue("찜 추가하였습니다.")
-                        _favoriteList.postValue(
-                            _favoriteList.value?.toMutableList()?.apply { add(data) }
-                        )
+                        _favoriteList.postValue(list)
                     } else {
                         _toastMessage.postValue("찜 추가에 실패했습니다.\n잠시 후 다시 시도해 주세요.")
                     }
@@ -53,14 +52,16 @@ open class BookmarkViewModel(
 
     fun deleteFavorite(data: Character) {
         viewModelScope.launch(Dispatchers.IO) {
+            setLoadingVisible(true)
             deleteFavoriteListUseCase(data.id)
-                .loading()
-                .collectLatest { isSuccess ->
+                .let { isSuccess ->
+                    setLoadingVisible(false)
                     if (isSuccess) {
                         _toastMessage.postValue("찜 삭제하였습니다.")
                         // data를 계속 copy하므로 remove를 사용한 삭제는 주소값이 달라 사용 불가능
                         _favoriteList.postValue(
-                            _favoriteList.value?.toMutableList()?.apply { removeIf { it.id == data.id } }
+                            _favoriteList.value?.toMutableList()
+                                ?.apply { removeIf { it.id == data.id } }
                         )
                     } else {
                         _toastMessage.postValue("찜 삭제에 실패했습니다.\n잠시 후 다시 시도해 주세요.")

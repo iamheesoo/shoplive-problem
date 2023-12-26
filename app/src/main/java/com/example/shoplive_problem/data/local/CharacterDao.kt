@@ -7,7 +7,7 @@ import androidx.room.Query
 
 @Dao
 interface CharacterDao {
-    @Query("SELECT * FROM character_table")
+    @Query("SELECT * FROM character_table ORDER BY timestamp ASC")
     fun getCharacterList(): List<CharacterEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

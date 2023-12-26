@@ -11,7 +11,7 @@ import com.example.shoplive_problem.domain.usecase.GetCharacterListUseCase
 import com.example.shoplive_problem.domain.usecase.GetFavoriteListUseCase
 import com.example.shoplive_problem.presentation.BookmarkViewModel
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class SearchViewModel(
@@ -44,6 +44,7 @@ class SearchViewModel(
             // ex. scroll down으로 페이징 요청하여 진행중에 다시 scroll down하는 경우
             job?.cancel()
             job = viewModelScope.launch {
+                setLoadingVisible(true)
                 getCharacterListUseCase(
                     GetCharacterListUseCase.Params(
                         text = searchText,
@@ -51,8 +52,10 @@ class SearchViewModel(
                         offset = _characterList.value?.size ?: 0
                     )
                 )
-                    .loading()
-                    .collectLatest {
+                    .let {
+                        // todo 다시체크
+                        delay(500L)
+                        setLoadingVisible(false)
                         when (it) {
                             is ResultData.Success -> {
                                 if (it.data?.isNotEmpty() == true) {
@@ -85,7 +88,8 @@ class SearchViewModel(
     }
 
     fun updateCharacterListFavorite() {
-        _characterList.value = _characterList.value?.map { it.copy(isFavorite = isFavoriteCharacter(it)) }
+        _characterList.value =
+            _characterList.value?.map { it.copy(isFavorite = isFavoriteCharacter(it)) }
     }
 
 

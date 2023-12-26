@@ -21,4 +21,8 @@ class FavoriteRepositoryImpl(
         val result = characterLocalDataSource.getFavoriteList()
         return result.map { it.toCharacter() }
     }
+
+    override suspend fun deleteOldestFavorite(): Boolean {
+        return characterLocalDataSource.deleteOldestFavorite()
+    }
 }

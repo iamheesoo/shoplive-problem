@@ -19,4 +19,8 @@ class CharacterLocalDataSourceImpl(
     override suspend fun deleteFavorite(id: Int): Boolean {
         return characterDao.deleteCharacter(id) == 1
     }
+
+    override suspend fun deleteOldestFavorite(): Boolean {
+        return characterDao.deleteOldestData() == 1
+    }
 }
