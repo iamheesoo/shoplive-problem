@@ -1,4 +1,4 @@
-package com.example.shoplive_problem.datasource
+package com.example.shoplive_problem.data.datasource
 
 import com.example.shoplive_problem.BuildConfig
 import com.example.shoplive_problem.data.api.MarvelApi

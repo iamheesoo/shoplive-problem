@@ -7,7 +7,7 @@ import com.example.shoplive_problem.domain.repository.MarvelRepository
 
 class GetCharacterListUseCase(
     private val marvelRepository: MarvelRepository
-): BaseUseCase<GetCharacterListUseCase.Params, List<Character>?>() {
+): BaseUseCase<GetCharacterListUseCase.Params, ResultData<List<Character>?>>() {
 
     override suspend fun execute(params: Params): ResultData<List<Character>?> {
         return marvelRepository.getCharacterList(params)

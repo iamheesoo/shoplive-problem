@@ -1,7 +1,6 @@
 package com.example.shoplive_problem.presentation.search
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,11 +28,17 @@ class SearchFragment : Fragment() {
         FragmentSearchBinding.inflate(layoutInflater)
     }
     private val viewModel: SearchViewModel by viewModel()
+//    private val bookmarkViewModel: BookmarkViewModel by sharedViewModel()
+
     private val adapter = CharacterAdapter(
         onClickCharacter = {
             // 프로그레스바가 돌아갈 때는 아이템 클릭을 막아 다른 동작을 못하게끔 한다
             if (viewModel.isLoading.value != true) {
-                Log.i("!!!", "$it click")
+                if (it.isFavorite) {
+                    viewModel.deleteFavorite(it)
+                } else {
+                    viewModel.addFavorite(it)
+                }
             }
         }
     )
@@ -59,6 +64,10 @@ class SearchFragment : Fragment() {
 
         viewModel.characterList.observe(this) {
             adapter.submitList(it)
+        }
+
+        viewModel.favoriteList.observe(this) {
+            viewModel.updateCharacterListFavorite()
         }
     }
 

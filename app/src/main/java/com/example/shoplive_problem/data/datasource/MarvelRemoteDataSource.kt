@@ -1,4 +1,4 @@
-package com.example.shoplive_problem.datasource
+package com.example.shoplive_problem.data.datasource
 
 import com.example.shoplive_problem.data.network.ResultData
 import com.example.shoplive_problem.data.response.CharacterResponse
