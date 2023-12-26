@@ -39,7 +39,8 @@ class SearchFragment : Fragment() {
                     viewModel.addFavorite(it)
                 }
             }
-        }
+        },
+        isFavoriteDim = true
     )
 
     override fun onCreateView(

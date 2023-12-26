@@ -1,6 +1,5 @@
 package com.example.shoplive_problem.presentation.search
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
@@ -17,7 +16,10 @@ import com.example.shoplive_problem.domain.model.Character
 import com.example.shoplive_problem.presentation.extensions.click
 import com.example.shoplive_problem.presentation.extensions.getDpToPx
 
-class CharacterAdapter(private val onClickCharacter: (Character) -> Unit) :
+class CharacterAdapter(
+    private val onClickCharacter: (Character) -> Unit,
+    private val isFavoriteDim: Boolean
+) :
     ListAdapter<Character, CharacterViewHolder>(object : DiffUtil.ItemCallback<Character>() {
         override fun areItemsTheSame(oldItem: Character, newItem: Character): Boolean {
             return oldItem.id == newItem.id
@@ -33,7 +35,7 @@ class CharacterAdapter(private val onClickCharacter: (Character) -> Unit) :
             parent,
             false
         )
-        return CharacterViewHolder(binding, onClickCharacter)
+        return CharacterViewHolder(binding, onClickCharacter, isFavoriteDim)
     }
 
     override fun onBindViewHolder(holder: CharacterViewHolder, position: Int) {
@@ -44,7 +46,8 @@ class CharacterAdapter(private val onClickCharacter: (Character) -> Unit) :
 
 class CharacterViewHolder(
     private val binding: ItemCharacterBinding,
-    private val onClick: (Character) -> Unit
+    private val onClick: (Character) -> Unit,
+    private val isFavoriteDim: Boolean
 ) : RecyclerView.ViewHolder(binding.root) {
 
     var data: Character? = null
@@ -74,15 +77,17 @@ class CharacterViewHolder(
                 tvName.text = _data.name
                 tvDescription.text = _data.description
 
-                root.setBackgroundColor(
-                    ContextCompat.getColor(
-                        root.context, if (_data.isFavorite) {
-                            R.color.gray
-                        } else {
-                            R.color.white
-                        }
+                if (isFavoriteDim) {
+                    root.setBackgroundColor(
+                        ContextCompat.getColor(
+                            root.context, if (_data.isFavorite) {
+                                R.color.gray
+                            } else {
+                                R.color.white
+                            }
+                        )
                     )
-                )
+                }
             }
         }
 

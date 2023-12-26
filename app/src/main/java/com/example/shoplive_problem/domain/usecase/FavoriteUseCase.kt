@@ -7,6 +7,7 @@ class FavoriteUseCase(
     private val favoriteRepository: FavoriteRepository
 ) {
     private var favoriteList = listOf<Character>()
+
     suspend fun getFavoriteList(): List<Character> {
         val list = favoriteRepository.getFavoriteList()
         favoriteList = list
@@ -37,4 +38,6 @@ class FavoriteUseCase(
     fun isFavorite(id: Int): Boolean {
         return favoriteList.find { it.id == id } != null
     }
+
+    fun getRecentFavoriteList() = favoriteList
 }
