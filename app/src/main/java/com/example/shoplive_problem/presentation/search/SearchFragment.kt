@@ -28,7 +28,6 @@ class SearchFragment : Fragment() {
         FragmentSearchBinding.inflate(layoutInflater)
     }
     private val viewModel: SearchViewModel by viewModel()
-//    private val bookmarkViewModel: BookmarkViewModel by sharedViewModel()
 
     private val adapter = CharacterAdapter(
         onClickCharacter = {
@@ -64,10 +63,6 @@ class SearchFragment : Fragment() {
 
         viewModel.characterList.observe(this) {
             adapter.submitList(it)
-        }
-
-        viewModel.favoriteList.observe(this) {
-            viewModel.updateCharacterListFavorite()
         }
     }
 
