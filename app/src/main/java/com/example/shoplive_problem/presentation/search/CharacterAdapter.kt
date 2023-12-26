@@ -3,6 +3,7 @@ package com.example.shoplive_problem.presentation.search
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -59,7 +60,6 @@ class CharacterViewHolder(
     fun bind() {
         data?.let { _data ->
             with(binding) {
-                Log.i("!!!", "${_data.thumbnailUrl}")
                 Glide.with(root.context)
                     .load(_data.thumbnailUrl)
                     .placeholder(R.drawable.placeholder)
@@ -73,6 +73,16 @@ class CharacterViewHolder(
                     .into(ivThumbnail)
                 tvName.text = _data.name
                 tvDescription.text = _data.description
+
+                root.setBackgroundColor(
+                    ContextCompat.getColor(
+                        root.context, if (_data.isFavorite) {
+                            R.color.gray
+                        } else {
+                            R.color.white
+                        }
+                    )
+                )
             }
         }
 

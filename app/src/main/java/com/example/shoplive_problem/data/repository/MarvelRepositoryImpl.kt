@@ -2,7 +2,7 @@ package com.example.shoplive_problem.data.repository
 
 import com.example.shoplive_problem.data.mapper.CharacterMapper
 import com.example.shoplive_problem.data.network.ResultData
-import com.example.shoplive_problem.datasource.MarvelRemoteDataSource
+import com.example.shoplive_problem.data.datasource.MarvelRemoteDataSource
 import com.example.shoplive_problem.domain.model.Character
 import com.example.shoplive_problem.domain.repository.MarvelRepository
 import com.example.shoplive_problem.domain.usecase.GetCharacterListUseCase
