@@ -96,7 +96,7 @@ class SearchFragment : Fragment() {
                 .debounce(300L)
                 .onEach { text ->
                     viewModel.searchText = text.toString()
-                    if (text.length > SEARCH_WORD_MIN_LENGTH) {
+                    if (text.length >= SEARCH_WORD_MIN_LENGTH) {
                         viewModel.getSearchResult()
                     }
                 }
