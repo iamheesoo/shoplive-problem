@@ -20,5 +20,5 @@ interface CharacterDao {
     fun deleteOldestData(): Int
 
     @Query("UPDATE character_table SET name = :name, description = :description, thumbnailUrl = :thumbnailUrl WHERE id = :id")
-    fun updateCharacter(id: Int, name: String, description: String, thumbnailUrl: String)
+    fun updateCharacter(id: Int, name: String, description: String, thumbnailUrl: String): Int
 }

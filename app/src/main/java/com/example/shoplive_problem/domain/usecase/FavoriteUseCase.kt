@@ -35,6 +35,10 @@ class FavoriteUseCase(
         return isSuccess
     }
 
+    suspend fun updateFavorite(data: Character) {
+        favoriteRepository.updateFavorite(data)
+    }
+
     fun isFavorite(id: Int): Boolean {
         return favoriteList.find { it.id == id } != null
     }

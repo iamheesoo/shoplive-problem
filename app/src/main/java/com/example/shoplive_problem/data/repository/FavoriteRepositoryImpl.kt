@@ -17,6 +17,15 @@ class FavoriteRepositoryImpl(
         return characterLocalDataSource.deleteFavorite(id)
     }
 
+    override suspend fun updateFavorite(data: Character): Boolean {
+        return characterLocalDataSource.updateFavorite(
+            id = data.id,
+            name = data.name,
+            description = data.description,
+            thumbnailUrl = data.thumbnailUrl ?: ""
+        )
+    }
+
     override suspend fun getFavoriteList(): List<Character> {
         val result = characterLocalDataSource.getFavoriteList()
         return result.map { it.toCharacter() }

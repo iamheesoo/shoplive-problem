@@ -67,6 +67,8 @@ class SearchViewModel(
                                             isFavorite = favoriteUseCase.isFavorite(it.id)
                                         )
                                     }
+                                    // 최신 정보로 favoriteDB 갱신
+                                    updateFavoriteDB(it.data)
                                     _characterList.value = (_characterList.value ?: emptyList())
                                         .toMutableList().apply { addAll(newList) }
                                 } else {
@@ -123,6 +125,22 @@ class SearchViewModel(
         _characterList.postValue(
             _characterList.value?.map { it.copy(isFavorite = favoriteUseCase.isFavorite(it.id)) }
         )
+    }
+
+    private  fun updateFavoriteDB(list: List<Character>) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val favoriteList = favoriteUseCase.getRecentFavoriteList()
+            favoriteList.forEach { favoriteData ->
+                list.find { it.id == favoriteData.id }?.let { compareData ->
+                    // 정보가 변경되었다면
+                    if (compareData.name != favoriteData.name || compareData.description != favoriteData.description
+                        || compareData.thumbnailUrl != favoriteData.thumbnailUrl
+                    ) {
+                        favoriteUseCase.updateFavorite(compareData)
+                    }
+                }
+            }
+        }
     }
 
     private fun clearData() {

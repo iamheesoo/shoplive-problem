@@ -5,7 +5,7 @@ import com.example.shoplive_problem.data.local.CharacterEntity
 
 class CharacterLocalDataSourceImpl(
     private val database: CharacterDatabase
-): CharacterLocalDataSource {
+) : CharacterLocalDataSource {
     private val characterDao = database.characterDao()
 
     override suspend fun getFavoriteList(): List<CharacterEntity> {
@@ -22,5 +22,19 @@ class CharacterLocalDataSourceImpl(
 
     override suspend fun deleteOldestFavorite(): Boolean {
         return characterDao.deleteOldestData() == 1
+    }
+
+    override suspend fun updateFavorite(
+        id: Int,
+        name: String,
+        description: String,
+        thumbnailUrl: String
+    ): Boolean {
+        return characterDao.updateCharacter(
+            id = id,
+            name = name,
+            description = description,
+            thumbnailUrl = thumbnailUrl
+        ) > 0
     }
 }
