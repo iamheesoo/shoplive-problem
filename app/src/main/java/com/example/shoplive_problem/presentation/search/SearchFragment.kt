@@ -103,4 +103,13 @@ class SearchFragment : Fragment() {
                 .launchIn(viewLifecycleOwner.lifecycleScope)
         }
     }
+
+    override fun onResume() {
+        super.onResume()
+        // ViewPager로 생성된 fragment는 탭 전환시 viewCreated를 호출하지 않는다
+        if (adapter.currentList.isNotEmpty()) {
+            viewModel.updateCharacterListFavorite()
+        }
+
+    }
 }

@@ -62,9 +62,9 @@ class FavoriteFragment : Fragment() {
         }
     }
 
-    override fun onStart() {
-        super.onStart()
+    override fun onResume() {
+        super.onResume()
         // ViewPager로 생성된 fragment는 탭 전환시 viewCreated를 호출하지 않는다
-        adapter.submitList(viewModel.getRecentFavoriteList())
+       viewModel.updateCharacterList()
     }
 }

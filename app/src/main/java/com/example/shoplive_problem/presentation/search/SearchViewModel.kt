@@ -119,7 +119,7 @@ class SearchViewModel(
 
     fun getRecentFavoriteList() = favoriteUseCase.getRecentFavoriteList()
 
-    private fun updateCharacterListFavorite() {
+    fun updateCharacterListFavorite() {
         _characterList.postValue(
             _characterList.value?.map { it.copy(isFavorite = favoriteUseCase.isFavorite(it.id)) }
         )

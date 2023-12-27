@@ -18,10 +18,10 @@ class FavoriteViewModel(
         get() = _characterList
 
     init {
-        getFavoriteList()
+        getCharacterList()
     }
 
-    private fun getFavoriteList() {
+    private fun getCharacterList() {
         viewModelScope.launch(Dispatchers.IO) {
             setLoadingVisible(true)
             favoriteUseCase.getFavoriteList()
@@ -48,7 +48,9 @@ class FavoriteViewModel(
         }
     }
 
-    fun getRecentFavoriteList() = favoriteUseCase.getRecentFavoriteList()
+    fun updateCharacterList() {
+        _characterList.value = favoriteUseCase.getRecentFavoriteList()
+    }
 
     private fun updateCharacterListFavorite() {
         _characterList.postValue(
