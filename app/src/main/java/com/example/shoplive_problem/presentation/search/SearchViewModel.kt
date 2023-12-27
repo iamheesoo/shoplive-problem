@@ -127,7 +127,7 @@ class SearchViewModel(
         )
     }
 
-    private  fun updateFavoriteDB(list: List<Character>) {
+    private fun updateFavoriteDB(list: List<Character>) {
         viewModelScope.launch(Dispatchers.IO) {
             val favoriteList = favoriteUseCase.getRecentFavoriteList()
             favoriteList.forEach { favoriteData ->
@@ -148,5 +148,6 @@ class SearchViewModel(
         isPagingAvailable = true
         _characterList.value = null
         job?.cancel()
+        setLoadingVisible(false)
     }
 }
