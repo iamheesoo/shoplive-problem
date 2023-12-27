@@ -11,9 +11,7 @@ data class CharacterResponse(
     val status: String = "",
     @SerialName("data")
     val data: Data? = null,
-){
-    fun isSuccess() = this.code == 200
-}
+)
 
 @Serializable
 data class Data(

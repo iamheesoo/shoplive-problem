@@ -1,4 +1,4 @@
-package com.example.shoplive_problem.presentation
+package com.example.shoplive_problem.presentation.base
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

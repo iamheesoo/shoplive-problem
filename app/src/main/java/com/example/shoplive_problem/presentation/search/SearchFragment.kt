@@ -10,6 +10,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.shoplive_problem.databinding.FragmentSearchBinding
+import com.example.shoplive_problem.presentation.common.CharacterAdapter
 import com.example.shoplive_problem.presentation.extensions.showToast
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.launchIn
@@ -106,7 +107,7 @@ class SearchFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        // ViewPager로 생성된 fragment는 탭 전환시 viewCreated를 호출하지 않는다
+        // ViewPager로 생성된 fragment는 탭 전환시 최초 생성 후 onResume부터 호출된다
         if (adapter.currentList.isNotEmpty()) {
             viewModel.updateCharacterListFavorite()
         }
