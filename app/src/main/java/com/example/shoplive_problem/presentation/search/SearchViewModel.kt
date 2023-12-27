@@ -56,7 +56,6 @@ class SearchViewModel(
                     )
                 )
                     .let {
-                        // todo 다시체크
                         delay(500L)
                         when (it) {
                             is ResultData.Success -> {
@@ -118,8 +117,6 @@ class SearchViewModel(
             setLoadingVisible(false)
         }
     }
-
-    fun getRecentFavoriteList() = favoriteUseCase.getRecentFavoriteList()
 
     fun updateCharacterListFavorite() {
         _characterList.postValue(

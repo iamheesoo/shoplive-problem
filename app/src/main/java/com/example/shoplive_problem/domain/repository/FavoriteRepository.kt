@@ -17,4 +17,10 @@ interface FavoriteRepository {
 
     // DB에서 가장 오래된 data 삭제
     suspend fun deleteOldestFavorite(): Boolean
+
+    // favoriteList 리턴
+    fun getRecentFavoriteList(): List<Character>
+
+    // 데이터의 찜 여부
+    fun isFavorite(id: Int): Boolean
 }

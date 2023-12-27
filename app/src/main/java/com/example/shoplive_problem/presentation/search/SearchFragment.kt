@@ -74,6 +74,8 @@ class SearchFragment : Fragment() {
         with(binding) {
             rvList.layoutManager = GridLayoutManager(root.context, 2)
             rvList.adapter = adapter
+            rvList.itemAnimator = null
+            rvList.setHasFixedSize(true)
 
             rvList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {

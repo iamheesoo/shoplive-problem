@@ -68,6 +68,7 @@ class FavoriteFragment : Fragment() {
             rvList.layoutManager = GridLayoutManager(root.context, 2)
             rvList.adapter = adapter
             rvList.itemAnimator = null
+            rvList.setHasFixedSize(true)
         }
     }
 

@@ -9,6 +9,9 @@ import com.example.shoplive_problem.domain.repository.FavoriteRepository
 class FavoriteRepositoryImpl(
     private val characterLocalDataSource: CharacterLocalDataSource
 ) : FavoriteRepository {
+
+    private var favoriteList = listOf<Character>()
+
     override suspend fun addFavorite(data: Character): Boolean {
         return characterLocalDataSource.addFavorite(data.toCharacterEntity())
     }
@@ -28,10 +31,20 @@ class FavoriteRepositoryImpl(
 
     override suspend fun getFavoriteList(): List<Character> {
         val result = characterLocalDataSource.getFavoriteList()
-        return result.map { it.toCharacter() }
+        val list =  result.map { it.toCharacter() }
+        favoriteList = list
+        return list
     }
 
     override suspend fun deleteOldestFavorite(): Boolean {
         return characterLocalDataSource.deleteOldestFavorite()
+    }
+
+    override fun getRecentFavoriteList(): List<Character> {
+        return favoriteList
+    }
+
+    override fun isFavorite(id: Int): Boolean {
+        return favoriteList.find { it.id == id } != null
     }
 }
