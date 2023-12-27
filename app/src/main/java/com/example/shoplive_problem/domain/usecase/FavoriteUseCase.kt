@@ -13,7 +13,7 @@ class FavoriteUseCase(
     suspend fun addFavorite(data: Character): Boolean {
         // favorite은 최대 5개까지 저장할 수 있다
         val favoriteList = favoriteRepository.getRecentFavoriteList()
-        val isDeleteSuccess = if (favoriteList.size >= 5) {
+        val isDeleteSuccess = if (favoriteList.size == 5) {
             favoriteRepository.deleteOldestFavorite()
         } else {
             true
