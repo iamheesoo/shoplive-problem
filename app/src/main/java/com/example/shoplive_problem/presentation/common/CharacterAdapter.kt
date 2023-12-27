@@ -13,8 +13,8 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.shoplive_problem.R
 import com.example.shoplive_problem.databinding.ItemCharacterBinding
 import com.example.shoplive_problem.domain.model.Character
-import com.example.shoplive_problem.presentation.extensions.click
 import com.example.shoplive_problem.presentation.extensions.getDpToPx
+import com.example.shoplive_problem.presentation.extensions.throttleOnClick
 
 class CharacterAdapter(
     private val onClickCharacter: (Character) -> Unit,
@@ -57,7 +57,7 @@ class CharacterViewHolder(
     var data: Character? = null
 
     init {
-        binding.root.click {
+        binding.root.throttleOnClick {
             data?.let {
                 onClick.invoke(it)
             }
