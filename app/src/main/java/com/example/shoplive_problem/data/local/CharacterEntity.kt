@@ -20,7 +20,7 @@ fun Character.toCharacterEntity() =
         name = this.name,
         description = this.description,
         thumbnailUrl = this.thumbnailUrl,
-        timestamp = System.currentTimeMillis() / 1000
+        timestamp = System.currentTimeMillis()
     )
 
 // DB -> presentation 사용 용도
