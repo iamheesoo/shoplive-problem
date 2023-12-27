@@ -11,11 +11,15 @@ abstract class BaseViewModel : ViewModel() {
         get() = _isLoading
 
 
-    val _toastMessage = MutableLiveData<String>()
+    private val _toastMessage = MutableLiveData<String>()
     val toastMessage: LiveData<String>
         get() = _toastMessage
 
     fun setLoadingVisible(isVisible: Boolean) {
         _isLoading.postValue(isVisible)
+    }
+
+    fun setToastMessage(message: String) {
+        _toastMessage.postValue(message)
     }
 }

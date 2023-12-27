@@ -4,7 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.example.shoplive_problem.domain.model.Character
 
-@Entity(tableName = "character_table")
+@Entity(tableName = CharacterDatabase.CHARACTER_TABLE_NAME)
 data class CharacterEntity(
     @PrimaryKey
     var id: Int = 0,

@@ -76,7 +76,7 @@ class SearchViewModel(
                             }
 
                             is ResultData.Error -> {
-                                _toastMessage.value = "서버 에러입니다.\n잠시 후 다시 시도해 주세요."
+                                setToastMessage("서버 에러입니다.\n잠시 후 다시 시도해 주세요.")
                                 isPagingAvailable = false
                             }
                         }
@@ -92,10 +92,10 @@ class SearchViewModel(
             favoriteUseCase.addFavorite(data)
                 .let { isSuccess ->
                     if (isSuccess) {
-                        _toastMessage.postValue("찜 추가하였습니다.")
+                        setToastMessage("찜 추가하였습니다.")
                         updateCharacterListFavorite()
                     } else {
-                        _toastMessage.postValue("찜 추가에 실패했습니다.\n잠시 후 다시 시도해 주세요.")
+                        setToastMessage("찜 추가에 실패했습니다.\n잠시 후 다시 시도해 주세요.")
                     }
                 }
             setLoadingVisible(false)
@@ -108,10 +108,10 @@ class SearchViewModel(
             favoriteUseCase.deleteFavorite(data.id)
                 .let { isSuccess ->
                     if (isSuccess) {
-                        _toastMessage.postValue("찜 삭제하였습니다.")
+                        setToastMessage("찜 삭제하였습니다.")
                         updateCharacterListFavorite()
                     } else {
-                        _toastMessage.postValue("찜 삭제에 실패했습니다.\n잠시 후 다시 시도해 주세요.")
+                        setToastMessage("찜 삭제에 실패했습니다.\n잠시 후 다시 시도해 주세요.")
                     }
                 }
             setLoadingVisible(false)

@@ -22,6 +22,7 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField("String", "API_PUBLIC_KEY", properties['api_public_key'])
         buildConfigField("String", "API_PRIVATE_KEY", properties['api_private_key'])
+        buildConfigField("String", "API_BASE_URL", properties['api_base_url'])
     }
     buildTypes {
         release {

@@ -38,10 +38,10 @@ class FavoriteViewModel(
             favoriteUseCase.deleteFavorite(data.id)
                 .let { isSuccess ->
                     if (isSuccess) {
-                        _toastMessage.postValue("찜 삭제하였습니다.")
+                        setToastMessage("찜 삭제하였습니다.")
                         updateCharacterListFavorite()
                     } else {
-                        _toastMessage.postValue("찜 삭제에 실패했습니다.\n잠시 후 다시 시도해 주세요.")
+                        setToastMessage("찜 삭제에 실패했습니다.\n잠시 후 다시 시도해 주세요.")
                     }
                 }
             setLoadingVisible(false)
