@@ -13,6 +13,9 @@ import androidx.room.RoomDatabase
 abstract class CharacterDatabase : RoomDatabase() {
 
     companion object {
+        private const val DATABASE_NAME = "character_database"
+        const val CHARACTER_TABLE_NAME = "character_table"
+
         @Volatile
         private var instance: CharacterDatabase? = null
 
@@ -27,7 +30,7 @@ abstract class CharacterDatabase : RoomDatabase() {
             return Room.databaseBuilder(
                 context.applicationContext,
                 CharacterDatabase::class.java,
-                "character_database"
+                DATABASE_NAME
             )
                 .fallbackToDestructiveMigration() // migration이 실패하는 경우 db를 재생성 (모든 데이터가 유실될 수 있음)
                 .build()
