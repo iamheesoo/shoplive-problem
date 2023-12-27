@@ -125,7 +125,6 @@ class SearchViewModel(
         )
     }
 
-
     private fun clearData() {
         // 검색어가 변경되면 화면에 노출되는 리스트, 페이징 변수, 진행 중이던 api 호출을 초기화한다
         isPagingAvailable = true
