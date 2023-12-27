@@ -35,7 +35,11 @@ class CharacterAdapter(
             parent,
             false
         )
-        return CharacterViewHolder(binding, onClickCharacter, isFavoriteDim)
+        return CharacterViewHolder(
+            binding = binding,
+            onClick = onClickCharacter,
+            isFavoriteDim = isFavoriteDim
+        )
     }
 
     override fun onBindViewHolder(holder: CharacterViewHolder, position: Int) {

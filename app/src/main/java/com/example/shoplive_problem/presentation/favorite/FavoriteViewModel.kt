@@ -52,8 +52,8 @@ class FavoriteViewModel(
 
     private fun updateCharacterListFavorite() {
         _characterList.postValue(
-            _characterList.value?.map { it.copy(isFavorite = favoriteUseCase.isFavorite(it.id)) }
-
+            _characterList.value?.filter { favoriteUseCase.isFavorite(it.id) }
+                ?.map { it.copy(isFavorite = true) }
         )
     }
 }
