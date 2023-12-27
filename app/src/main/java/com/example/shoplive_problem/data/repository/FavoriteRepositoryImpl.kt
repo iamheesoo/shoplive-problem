@@ -41,6 +41,8 @@ class FavoriteRepositoryImpl(
     }
 
     override fun getRecentFavoriteList(): List<Character> {
+        // add, delete, update, get을 수행하여 favoriteList에 최신 DB 데이터를 조회해두면
+        // view에서 데이터가 필요할 때 favoriteList를 리턴하여 DB 탐색 비용을 줄인다
         return favoriteList
     }
 
