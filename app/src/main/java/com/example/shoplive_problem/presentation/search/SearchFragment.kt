@@ -28,7 +28,6 @@ class SearchFragment : Fragment() {
         FragmentSearchBinding.inflate(layoutInflater)
     }
     private val viewModel: SearchViewModel by viewModel()
-//    private val bookmarkViewModel: BookmarkViewModel by sharedViewModel()
 
     private val adapter = CharacterAdapter(
         onClickCharacter = {
@@ -40,7 +39,8 @@ class SearchFragment : Fragment() {
                     viewModel.addFavorite(it)
                 }
             }
-        }
+        },
+        isFavoriteDim = true
     )
 
     override fun onCreateView(
@@ -64,10 +64,6 @@ class SearchFragment : Fragment() {
 
         viewModel.characterList.observe(this) {
             adapter.submitList(it)
-        }
-
-        viewModel.favoriteList.observe(this) {
-            viewModel.updateCharacterListFavorite()
         }
     }
 
@@ -106,5 +102,14 @@ class SearchFragment : Fragment() {
                 }
                 .launchIn(viewLifecycleOwner.lifecycleScope)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // ViewPager로 생성된 fragment는 탭 전환시 viewCreated를 호출하지 않는다
+        if (adapter.currentList.isNotEmpty()) {
+            viewModel.updateCharacterListFavorite()
+        }
+
     }
 }
