@@ -49,7 +49,16 @@ class FavoriteFragment : Fragment() {
         }
 
         viewModel.characterList.observe(this) {
-            adapter.submitList(it)
+            with(binding) {
+                adapter.submitList(it)
+                if (it.isNotEmpty()) {
+                    rvList.isVisible = true
+                    layoutNoItem.root.isVisible = false
+                } else {
+                    rvList.isVisible = false
+                    layoutNoItem.root.isVisible = true
+                }
+            }
         }
     }
 
@@ -65,6 +74,6 @@ class FavoriteFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         // ViewPager로 생성된 fragment는 탭 전환시 viewCreated를 호출하지 않는다
-       viewModel.updateCharacterList()
+        viewModel.updateCharacterList()
     }
 }

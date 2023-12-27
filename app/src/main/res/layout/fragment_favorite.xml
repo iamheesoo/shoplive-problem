@@ -33,4 +33,10 @@
             app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <include
+        android:id="@+id/layout_no_item"
+        layout="@layout/item_no"
+        android:visibility="visible" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
