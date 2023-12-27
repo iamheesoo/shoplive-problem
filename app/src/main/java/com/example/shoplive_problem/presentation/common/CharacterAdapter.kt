@@ -1,4 +1,4 @@
-package com.example.shoplive_problem.presentation.search
+package com.example.shoplive_problem.presentation.common
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -94,7 +94,5 @@ class CharacterViewHolder(
                 }
             }
         }
-
     }
-
 }

@@ -1,4 +1,4 @@
-package com.example.shoplive_problem.presentation
+package com.example.shoplive_problem.presentation.main
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -10,8 +10,6 @@ class MainActivity : AppCompatActivity() {
         ActivityMainBinding.inflate(layoutInflater)
     }
 
-    private val tabList = listOf("SEARCH", "FAVORITE")
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -19,7 +17,7 @@ class MainActivity : AppCompatActivity() {
         with(binding) {
             viewpager.adapter = TabAdapter(this@MainActivity.supportFragmentManager, lifecycle)
             TabLayoutMediator(tlTab, viewpager) { tab, position ->
-                tab.text = tabList[position]
+                tab.text = TabType.values()[position].name
             }.attach()
         }
     }

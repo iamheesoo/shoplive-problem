@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.shoplive_problem.databinding.FragmentFavoriteBinding
 import com.example.shoplive_problem.presentation.extensions.showToast
-import com.example.shoplive_problem.presentation.search.CharacterAdapter
+import com.example.shoplive_problem.presentation.common.CharacterAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class FavoriteFragment : Fragment() {
@@ -73,7 +73,7 @@ class FavoriteFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        // ViewPager로 생성된 fragment는 탭 전환시 viewCreated를 호출하지 않는다
+        // ViewPager로 생성된 fragment는 탭 전환시 최초 생성 후 onResume부터 호출된다
         viewModel.updateCharacterList()
     }
 }

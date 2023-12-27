@@ -7,7 +7,7 @@ import com.example.shoplive_problem.data.network.ResultData
 import com.example.shoplive_problem.domain.model.Character
 import com.example.shoplive_problem.domain.usecase.FavoriteUseCase
 import com.example.shoplive_problem.domain.usecase.GetCharacterListUseCase
-import com.example.shoplive_problem.presentation.BaseViewModel
+import com.example.shoplive_problem.presentation.base.BaseViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -67,6 +67,8 @@ class SearchViewModel(
                                             isFavorite = favoriteUseCase.isFavorite(it.id)
                                         )
                                     }
+                                    // 최신 정보로 favoriteDB 갱신
+                                    updateFavoriteDB(it.data)
                                     _characterList.value = (_characterList.value ?: emptyList())
                                         .toMutableList().apply { addAll(newList) }
                                 } else {
@@ -125,10 +127,27 @@ class SearchViewModel(
         )
     }
 
+    private fun updateFavoriteDB(list: List<Character>) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val favoriteList = favoriteUseCase.getRecentFavoriteList()
+            favoriteList.forEach { favoriteData ->
+                list.find { it.id == favoriteData.id }?.let { compareData ->
+                    // 정보가 변경되었다면
+                    if (compareData.name != favoriteData.name || compareData.description != favoriteData.description
+                        || compareData.thumbnailUrl != favoriteData.thumbnailUrl
+                    ) {
+                        favoriteUseCase.updateFavorite(compareData)
+                    }
+                }
+            }
+        }
+    }
+
     private fun clearData() {
         // 검색어가 변경되면 화면에 노출되는 리스트, 페이징 변수, 진행 중이던 api 호출을 초기화한다
         isPagingAvailable = true
         _characterList.value = null
         job?.cancel()
+        setLoadingVisible(false)
     }
 }

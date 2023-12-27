@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.shoplive_problem.domain.model.Character
 import com.example.shoplive_problem.domain.usecase.FavoriteUseCase
-import com.example.shoplive_problem.presentation.BaseViewModel
+import com.example.shoplive_problem.presentation.base.BaseViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 

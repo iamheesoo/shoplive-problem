@@ -15,6 +15,7 @@ class FavoriteUseCase(
     }
 
     suspend fun addFavorite(data: Character): Boolean {
+        // favorite은 최대 5개까지 저장할 수 있다
         val isDeleteSuccess = if (favoriteList.size >= 5) {
             favoriteRepository.deleteOldestFavorite()
         } else {
@@ -35,9 +36,15 @@ class FavoriteUseCase(
         return isSuccess
     }
 
+    suspend fun updateFavorite(data: Character) {
+        favoriteRepository.updateFavorite(data)
+    }
+
     fun isFavorite(id: Int): Boolean {
         return favoriteList.find { it.id == id } != null
     }
 
+    // add, delete, update, get을 수행하여 favoriteList에 최신 DB 데이터를 조회해두면
+    // view에서 데이터가 필요할 때 favoriteList를 리턴하여 DB 탐색 비용을 줄인다
     fun getRecentFavoriteList() = favoriteList
 }

@@ -1,4 +1,4 @@
-package com.example.shoplive_problem.presentation
+package com.example.shoplive_problem.presentation.main
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -13,13 +13,13 @@ class TabAdapter(
 ) : FragmentStateAdapter(fragmentManager, lifecycle) {
 
     override fun getItemCount(): Int {
-        return 2
+        return TabType.values().size
     }
 
     override fun createFragment(position: Int): Fragment {
         return when (position) {
-            0 -> SearchFragment()
-            1 -> FavoriteFragment()
+            TabType.SEARCH.ordinal-> SearchFragment()
+            TabType.FAVORITE.ordinal -> FavoriteFragment()
             else -> throw IllegalArgumentException("Invalid tab position")
         }
     }
