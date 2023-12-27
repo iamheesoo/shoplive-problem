@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.shoplive_problem.databinding.FragmentSearchBinding
 import com.example.shoplive_problem.presentation.common.CharacterAdapter
+import com.example.shoplive_problem.presentation.extensions.hideKeyboard
 import com.example.shoplive_problem.presentation.extensions.showToast
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.launchIn
@@ -39,6 +40,7 @@ class SearchFragment : Fragment() {
                 } else {
                     viewModel.addFavorite(it)
                 }
+                binding.root.hideKeyboard()
             }
         },
         isFavoriteDim = true
