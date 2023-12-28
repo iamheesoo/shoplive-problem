@@ -28,6 +28,7 @@ private val dataSourceModule = module {
     single<MarvelRemoteDataSource> { MarvelRemoteDataSourceImpl(get()) }
     single<CharacterLocalDataSource> { CharacterLocalDataSourceImpl(get()) }
     single { CharacterDatabase.getInstance(androidContext()) }
+    single { get<CharacterDatabase>().characterDao() }
 }
 
 val dataModule = apiModule + repositoryModule + dataSourceModule

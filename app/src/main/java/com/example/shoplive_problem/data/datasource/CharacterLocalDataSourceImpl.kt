@@ -1,12 +1,12 @@
 package com.example.shoplive_problem.data.datasource
 
+import com.example.shoplive_problem.data.local.CharacterDao
 import com.example.shoplive_problem.data.local.CharacterDatabase
 import com.example.shoplive_problem.data.local.CharacterEntity
 
 class CharacterLocalDataSourceImpl(
-    private val database: CharacterDatabase
+    private val characterDao: CharacterDao
 ) : CharacterLocalDataSource {
-    private val characterDao = database.characterDao()
 
     override suspend fun getFavoriteList(): List<CharacterEntity> {
         return characterDao.getCharacterList()
